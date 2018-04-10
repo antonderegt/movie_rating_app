@@ -21,6 +21,7 @@
 </template>
 <script>
  import MoviesService from '@/services/MoviesService'
+ import axios from 'axios'
  export default {
    data () {
    return {
@@ -28,15 +29,18 @@
      }
    },
    mounted () {
-      if(this.current_user.name) {
+//     console.log('current user: ' + current_user)
+//      if(this.current_user.name) {
    this.fetchMovies();
- } else {
-   this.$router.push({ name: 'Login' })
- }
+// } else {
+ //  this.$router.push({ name: 'Login' })
+ //}
    },
    methods: {
      async fetchMovies () {
+       console.log('fetching Movies')
    const token = window.localStorage.getItem('auth');
+       console.log('token: '+ token)
    return axios({
      method: 'get',
      url: `http://localhost:8081/movies`,
@@ -46,6 +50,7 @@
      }
    })
    .then((response) => {
+     console.log('response: '+response.data.current_user)
      this.movies = response.data.movies;
      this.current_user = response.data.current_user;
      console.log(response.data.current_user.name);

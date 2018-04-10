@@ -1,9 +1,11 @@
 var Movie = require("../models/Movie");
 const passport = require("passport");
 
+//require('../config/passport.js')(passport);
+
 module.exports.controller = (app) => {
 
-  // fetch all movies
+ // fetch all movies
  app.get("/movies", passport.authenticate('jwt', { session: false }), function(req, res){
    console.log(req.user.email);
    Movie.find({}, 'name description release_year genre', function (error, movies) {

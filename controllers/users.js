@@ -5,7 +5,7 @@ const ExtractJwt = passportJWT.ExtractJwt;
 const jwt = require("jsonwebtoken");
 const jwtOptions = {}
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('jwt');
-jwtOptions.secretOrKey = 'thisisthesecretkey';
+jwtOptions.secretOrKey = 'movieratingapplicationsecretkey';
 
 module.exports.controller = (app) => {
  // register a user
@@ -30,14 +30,20 @@ module.exports.controller = (app) => {
 
   // login a user
  app.post("/users/login", function(req, res) {
+   console.log('Logging in');
    if(req.body.email && req.body.password){
+   console.log('input correct '+ req.body.email + ' ' + req.body.password);
      const email = req.body.email;
      const password = req.body.password;
      User.getUserByEmail(email, function(err, user){
+
+       console.log('error: '+err+' user: '+user);
        if( ! user ){
          res.status(404).json({ message:"The user does not exist!" });
        } else {
+         console.log('user exists')
          User.comparePassword(password, user.password, function(err, isMatch){
+           console.log('err: '+err+' match: ' + isMatch)
            if(err) throw err;
            if(isMatch){
              const payload = {id: user.id};

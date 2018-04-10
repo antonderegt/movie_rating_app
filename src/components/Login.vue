@@ -47,13 +47,14 @@
          }
        })
        .then((response) => {
+         console.log('response: ' + response.data.message)
          window.localStorage.setItem('auth', response.data.token);
-         this.$swal("Good job!", "You are ready to start!", "success")
+//         this.$swal("Good job!", "You are ready to start!", "success")
          this.$router.push({ name: 'Home' })
        })
        .catch((error) => {
          const message = error.response.data.message;
-         this.$swal("Oh oo!", `${message}`, "error")
+ //        this.$swal("Oh oo!", `${message}`, "error")
          this.$router.push({ name: 'Login' })
        });
      },
