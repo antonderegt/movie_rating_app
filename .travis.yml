@@ -3,4 +3,4 @@ node_js:
  - "8.5.0"
 before_script:
  - npm install
-script: mocha test/unit/specs/models/Movie.spec.js
+script: mocha test/unit/controllers/movies.spec.js
