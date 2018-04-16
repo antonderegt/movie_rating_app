@@ -5,7 +5,7 @@ const ExtractJwt = passportJWT.ExtractJwt;
 const jwt = require("jsonwebtoken");
 const jwtOptions = {}
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('jwt');
-jwtOptions.secretOrKey = 'movieratingapplicationsecretkey';
+jwtOptions.secretOrKey = 'thisisthesecretkey';
 
 module.exports.controller = (app) => {
  // register a user

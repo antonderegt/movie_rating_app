@@ -18,6 +18,10 @@
      submit
    </v-btn>
    <v-btn @click="clear">clear</v-btn>
+   <a href="http://127.0.0.1:8081/login/facebook">Log In with Facebook</a>
+   <a href="http://127.0.0.1:8081/login/twitter">Log In with Twitter</a>
+      <a href="http://127.0.0.1:8081/login/google">Log In with Google</a>
+      <a href="http://127.0.0.1:8081/login/linkedin">Log In with Linkedin</a>
  </v-form>
 </template>
 

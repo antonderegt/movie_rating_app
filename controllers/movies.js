@@ -1,25 +1,23 @@
-var Movie = require("../models/Movie");
+const Movie = require("../models/Movie");
 const passport = require("passport");
 
-//require('../config/passport.js')(passport);
-
 module.exports.controller = (app) => {
-
- // fetch all movies
- app.get("/movies", passport.authenticate('jwt', { session: false }), function(req, res){
-   console.log(req.user.email);
-   Movie.find({}, 'name description release_year genre', function (error, movies) {
-     if (error) { console.log(error); }
-      res.send({
-       movies: movies,
-       current_user: {
-         name: req.user.name,
-         email: req.user.email
-       }
-     })
+ // send a dummy test
+ app.get("/dummy_test", function(req, res) {
+   res.status(200).send({
+     name: 'John'
    })
  })
 
+ // fetch all movies
+ app.get("/movies", function(req, res) {
+   Movie.find({}, 'name description release_year genre', function (error, movies) {
+     if (error) { console.log(error); }
+      res.send({
+       movies: movies
+     })
+   })
+ })
 
  // add a new movie
  app.post('/movies', (req, res) => {
@@ -32,7 +30,12 @@ module.exports.controller = (app) => {
 
    movie.save(function (error, movie) {
      if (error) { console.log(error); }
-     res.send(movie)
+     res.send({
+       name: movie.name,
+       description: movie.description,
+       release_year: movie.release_year,
+       genre: movie.genre
+     })
    })
  })
 }

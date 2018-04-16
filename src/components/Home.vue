@@ -20,47 +20,27 @@
  </v-layout>
 </template>
 <script>
+ import store from './../vuex/store'
+ import { mapGetters, mapActions } from 'vuex'
  import MoviesService from '@/services/MoviesService'
  import axios from 'axios'
  export default {
+   store,
+   computed: mapGetters([
+     'getMovies'
+   ]),
    data () {
    return {
-       movies: []
+       movies: [],
+       current_user: {}
      }
    },
    mounted () {
-//     console.log('current user: ' + current_user)
-//      if(this.current_user.name) {
-   this.fetchMovies();
-// } else {
- //  this.$router.push({ name: 'Login' })
- //}
+     this.fetchMovies();
    },
-   methods: {
-     async fetchMovies () {
-       console.log('fetching Movies')
-   const token = window.localStorage.getItem('auth');
-       console.log('token: '+ token)
-   return axios({
-     method: 'get',
-     url: `http://localhost:8081/movies`,
-     headers: {
-       'Authorization': 'JWT ' + token,
-       'Content-Type': 'application/json'
-     }
-   })
-   .then((response) => {
-     console.log('response: '+response.data.current_user)
-     this.movies = response.data.movies;
-     this.current_user = response.data.current_user;
-     console.log(response.data.current_user.name);
-   })
-   .catch((error) => {
-     console.log(error);
-   });
- }
-
-   }
+    methods: mapActions([
+     'updateMovies'
+   ]),
  }
 </script>
 
