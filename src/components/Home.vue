@@ -19,28 +19,28 @@
    </v-flex>
  </v-layout>
 </template>
-<script>
- import store from './../vuex/store'
- import { mapGetters, mapActions } from 'vuex'
- import MoviesService from '@/services/MoviesService'
- import axios from 'axios'
- export default {
-   store,
-   computed: mapGetters([
-     'getMovies'
-   ]),
-   data () {
-   return {
-       movies: [],
-       current_user: {}
-     }
-   },
-   mounted () {
-     this.fetchMovies();
-   },
-    methods: mapActions([
-     'updateMovies'
-   ]),
- }
-</script>
 
+
+   <script>
+   import axios from 'axios';
+   export default {
+     name: 'Movies',
+     data() {
+       return {
+         movies: [],
+}; },
+     mounted() {
+       this.fetchMovies();
+}, methods: {
+       async fetchMovies() {
+         return axios({
+           method: 'get',
+           url: '/api/movies',
+         })
+           .then((response) => {
+             this.movies = response.data.movies;
+           })
+           .catch(() => {
+             }); },
+}, };
+</script>

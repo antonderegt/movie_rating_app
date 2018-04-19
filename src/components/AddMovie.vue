@@ -33,53 +33,65 @@
  </v-form>
 </template>
 
-<script>
- import MoviesService from '@/services/MoviesService'
- export default {
-   data: () => ({
-     valid: true,
-     name: '',
-     description: '',
-     genre: '',
-     release_year: '',
-     nameRules: [
-       (v) => !!v || 'Movie name is required'
-     ],
-      genreRules: [
-       (v) => !!v || 'Movie genre year is required',
-       (v) => v && v.length <= 30 || 'Genre must be less than equal to 50 characters.'
-     ],
-     releaseRules: [
-       (v) => !!v || 'Movie release year is required'
-     ],
-     select: null,
-     years: [
-       '2018',
-       '2017',
-       '2016',
-       '2015'
-     ],
-     checkbox: false
-   }),
-   methods: {
-     submit () {
-       MoviesService.addMovie({
-         name: this.name,
-         description: this.description,
-         release_year: this.release_year,
-         genre: this.genre
-       })
-        this.$swal(
-           'Great!',
-           `Movie added successfully!`,
-           'success'
-         )
-       this.$router.push({ name: 'Home' })
-     },
-     clear () {
-       this.$refs.form.reset()
-     }
-   }
- }
-</script>
 
+<script>
+import axios from 'axios';
+export default {
+  data: () => ({
+    valid: true,
+    name: '',
+    description: '',
+    genre: '',
+    release_year: '',
+    nameRules: [
+      v => !!v || 'Movie name is required',
+    ],
+    genreRules: [
+      v => !!v || 'Movie genre year is required',
+      v => (v && v.length <= 80) || 'Genre must be less than equal to 80 characters.',
+    ],
+    releaseRules: [
+      v => !!v || 'Movie release year is required',
+    ],
+    select: null,
+    years: [
+      '2018',
+      '2017',
+      '2016',
+      '2015',
+], }),
+  methods: {
+    submit() {
+      if (this.$refs.form.validate()) {
+        return axios({
+          method: 'post',
+          data: {
+            name: this.name,
+            description: this.description,
+            release_year: this.release_year,
+            genre: this.genre,
+},
+          url: '/api/movies',
+          headers: {
+            'Content-Type': 'application/json',
+}, })
+          .then(() => {
+            this.$swal(
+              'Great!','Movie added successfully!',
+                 'success',
+               );
+               this.$router.push({ name: 'Home' });
+               this.$refs.form.reset();
+             })
+             .catch(() => {
+               this.$swal(
+                 'Oh oo!',
+                 'Could not add the movie!',
+'error', );
+}); }
+         return true;
+       },
+       clear() {
+         this.$refs.form.reset();
+}, },
+}; </script>

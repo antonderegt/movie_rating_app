@@ -29,7 +29,12 @@
      <v-toolbar-title>Home</v-toolbar-title>
      <v-spacer></v-spacer>
      <v-toolbar-items class="hidden-sm-and-down">
-       <v-btn flat v-bind:to="{ name: 'AddMovie' }">Add Movie</v-btn>
+       <v-btn flat v-bind:to="{ name: 'AddMovie' }" v-if="current_user &&
+   current_user.role === 'admin'">Add Movie</v-btn>
+        <v-btn flat v-if="current_user">{{ current_user.email }}</v-btn>
+        <v-btn flat v-bind:to="{ name: 'Register' }" v-if="!current_user">Register</v-btn>
+       <v-btn flat v-bind:to="{ name: 'Login' }">Login</v-btn>
+       <v-btn flat v-if="current_user" @click="logout">Logout</v-btn>
      </v-toolbar-items>
    </v-toolbar>
    <v-content>
@@ -45,21 +50,51 @@
  </v-app>
 </template>
 
-<script>
-import store from './vuex/store'
- import MoviesService from '@/services/MoviesService'
- import axios from 'axios'
- export default {
-   store,
-   data () {
-   return {
-       movies: [],
-       current_user: {}
-     }
-   },
-   mounted () {
-     this.fetchMovies();
-   },
+  <script>
+   import bus from './bus.js';
+   import axios from 'axios';
+   export default {
+     name: 'app',
+     data: () => ({
+       drawer: null,
+       current_user: null
+     }),
+     props: {
+       source: String,
+     },
+     mounted() {
+       this.fetchUser();
+       this.listenToEvents();
+     },
+     methods: {
+       listenToEvents() {
+         bus.$on('refreshUser', ($event) => {
+           this.fetchUser();
+}) },
+   async fetchUser() {
+         axios.defaults.headers.common.Authorization =
+   localStorage.getItem('jwtToken')
+         return axios({
+           method: 'get',
+           url: '/api/current_user',
+         })
+           .then((response) => {
+             this.current_user = response.data.current_user
+           })
+           .catch((error) => {
+             console.log(error);
+}); },
+   logout () {
+         return axios({
+           method: 'get',
+           url: '/api/logout',
+         })
+           .then((response) => {
+             this.$router.go('/');
+           })
+           .catch((error) => {
+             console.log(error);
+           });
+}
  }
-</script>
-
+}; </script>

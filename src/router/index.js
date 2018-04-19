@@ -27,12 +27,12 @@ export default new Router({
      component: AddMovie,
     },
      {
-     path: '/users/register',
+     path: '/register',
      name: 'Register',
      component: Register,
      },
     {
-     path: '/users/login',
+     path: '/login',
      name: 'Login',
      component: Login,
    }
